@@ -1,12 +1,15 @@
 package com.choco_tyranno.legacywayfragmentdatapass
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.activity.result.ActivityResultRegistry
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.os.bundleOf
@@ -20,14 +23,34 @@ class FirstFragment : Fragment(R.layout.fragment_first) {
         imageView?.setImageURI(uri)
     }
 
+    val getStartActivityForResult = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ){activityResult ->
+        activityResult?.data?.let { intent->
+            intent.extras?.let { bundle ->
+                Toast.makeText(
+                    requireContext(),
+                    "result:${bundle.getString("data","No data")}"
+                    , Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val firstButton = view.findViewById<Button>(R.id.first_button)
 
         firstButton.setOnClickListener {
-            //MIME TYPE
-            getContent.launch("image/*")
+            Intent(requireContext(), ResultActivity::class.java).apply {
+                getStartActivityForResult.launch(this)
+            }
+//            MIME TYPE
+//            getContent.launch("image/*")
         }
+    }
+
+    companion object{
+        private val TAG = FirstFragment::class.java.simpleName
     }
 }
