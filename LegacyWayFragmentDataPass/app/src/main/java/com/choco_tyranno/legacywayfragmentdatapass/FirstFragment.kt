@@ -1,5 +1,6 @@
 package com.choco_tyranno.legacywayfragmentdatapass
 
+import android.Manifest
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -37,16 +38,27 @@ class FirstFragment : Fragment(R.layout.fragment_first) {
         }
     }
 
+    val requestPermission = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ){ granted ->
+        if(granted) Toast.makeText(requireContext(),"권한 승인",Toast.LENGTH_SHORT).show()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val firstButton = view.findViewById<Button>(R.id.first_button)
 
         firstButton.setOnClickListener {
-            Intent(requireContext(), ResultActivity::class.java).apply {
+            requestPermission.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+
+/*            Intent(requireContext(), ResultActivity::class.java).apply {
                 getStartActivityForResult.launch(this)
-            }
+            }*/
+
 //            MIME TYPE
 //            getContent.launch("image/*")
+
+
         }
     }
 
