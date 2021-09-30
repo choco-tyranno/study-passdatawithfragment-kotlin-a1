@@ -12,7 +12,6 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.findNavController
 
 class SecondFragment : Fragment(R.layout.fragment_second) {
-    val viewModel by activityViewModels<MainViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
